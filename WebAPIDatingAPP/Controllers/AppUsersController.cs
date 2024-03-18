@@ -6,7 +6,7 @@ using WebAPIDatingAPP.Entities;
 namespace WebAPIDatingAPP.Controllers
 {
     [ApiController]
-    [Route("[Api/controller]")]
+    [Route("api/[controller]")]
     public class AppUsersController : ControllerBase
     {
 
@@ -17,14 +17,14 @@ namespace WebAPIDatingAPP.Controllers
             _context = dataContext;
         }
         [HttpGet]
-        //AppUsers/GetUsers
         public async Task<ActionResult<IEnumerable<AppUsers>>> GetUsers()
         {
             var users = await _context.AppUsers.ToListAsync();
-            return users;
+            return Ok(users);
         }
         [HttpGet("{id}")]
-        public async Task<ActionResult<AppUsers>> GetUser(int id)
+        //api/AppUsers/1
+        public async Task<ActionResult<AppUsers>> GetUserbyId(int id)
         {
             var users = await _context.AppUsers.FindAsync(id);
             return users;
