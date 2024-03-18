@@ -10,7 +10,7 @@ namespace WebAPIDatingAPP.DATA
         {
 
         }
-        DbSet<AppUsers> AppUsers { get;set; }
+       public DbSet<AppUsers> AppUsers { get;set; }
 
     }
 }
