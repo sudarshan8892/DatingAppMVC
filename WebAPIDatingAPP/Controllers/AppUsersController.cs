@@ -17,7 +17,8 @@ namespace WebAPIDatingAPP.Controllers
             _context = dataContext;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AppUsers>>> GetUsers()
+        //api/AppUsers
+        public async Task<ActionResult<IEnumerable<AppUsers>>>GetUsers()
         {
             var users = await _context.AppUsers.ToListAsync();
             return Ok(users);
