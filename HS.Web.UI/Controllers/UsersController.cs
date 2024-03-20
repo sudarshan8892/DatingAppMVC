@@ -28,5 +28,17 @@ namespace HS.Web.UI.Controllers
             var appUsers = JsonConvert.DeserializeObject<IEnumerable<AppUsers>>(data);
             return View("Index", appUsers);
         }
+        public IActionResult UserByid(int id)
+        {
+            string data = null;
+            HttpResponseMessage response = _Client.GetAsync($"{_Client.BaseAddress}/AppUsers/{id}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                data = response.Content.ReadAsStringAsync().Result;
+
+            }
+            var appUser = JsonConvert.DeserializeObject<AppUsers>(data);
+            return View("Index", appUser);
+        }
     }
 }

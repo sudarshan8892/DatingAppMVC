@@ -7,7 +7,7 @@ namespace WebAPIDatingAPP.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AppUsersController : ControllerBase
+    public class AppUsersController : BaseApiController
     {
 
         private readonly DataContext _context;
@@ -28,7 +28,7 @@ namespace WebAPIDatingAPP.Controllers
         public async Task<ActionResult<AppUsers>> GetUserbyId(int id)
         {
             var users = await _context.AppUsers.FindAsync(id);
-            return users;
+            return Ok(users);
         }
 
     }
