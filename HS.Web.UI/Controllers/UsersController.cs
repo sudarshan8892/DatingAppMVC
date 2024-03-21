@@ -5,7 +5,7 @@ using WebAPIDatingAPP.Entities;
 
 namespace HS.Web.UI.Controllers
 {
-    [Authorize]
+   
     public class UsersController : Controller
     {
         Uri baseUrl = new Uri("https://localhost:9999/api");
@@ -33,7 +33,7 @@ namespace HS.Web.UI.Controllers
         public IActionResult UserByid(int id)
         {
             string data = null;
-            HttpResponseMessage response = _Client.GetAsync($"{_Client.BaseAddress}/AppUsers/{id}").Result;
+            HttpResponseMessage response = _Client.GetAsync(_Client.BaseAddress +"/AppUsers/{id}").Result;
             if (response.IsSuccessStatusCode)
             {
                 data = response.Content.ReadAsStringAsync().Result;
