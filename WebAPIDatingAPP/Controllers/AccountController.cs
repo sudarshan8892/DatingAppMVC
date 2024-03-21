@@ -6,18 +6,21 @@ using WebAPIDatingAPP.DATA;
 using WebAPIDatingAPP.DATA.migration;
 using WebAPIDatingAPP.DTOs;
 using WebAPIDatingAPP.Entities;
+using WebAPIDatingAPP.Interfaces;
 
 namespace WebAPIDatingAPP.Controllers
 {
     public class AccountController : BaseApiController
     {
         public readonly DataContext _context;
-        public AccountController(DataContext context)
+        private readonly ITokenService _token;
+        public AccountController(DataContext context,ITokenService tokenService)
         {
             _context = context;
+            _token = tokenService;
         }
         [HttpPost("register")]
-        public async Task<ActionResult<AppUsers>> Register(RegisterDto registerDto)
+        public async Task<ActionResult<UsersDTo>> Register(RegisterDto registerDto)
         {
 
             if (await UserExists(registerDto.Username)) return BadRequest("User Name already exist");
@@ -32,10 +35,16 @@ namespace WebAPIDatingAPP.Controllers
 
             _context.AppUsers.Add(users);
             await _context.SaveChangesAsync();
-            return users;
+            return new UsersDTo
+            {
+                UserName = users.UserName,
+                Token = _token.CreateToken(users)
+
+
+            };
         }
         [HttpPost("login")]
-        public async Task<ActionResult<AppUsers>> Login (LoginDTo loginDTo)
+        public async Task<ActionResult<UsersDTo>> Login (LoginDTo loginDTo)
         {
             var user = await _context.AppUsers.SingleOrDefaultAsync(x => x.UserName == loginDTo.Username);
             if (user == null)
@@ -49,7 +58,13 @@ namespace WebAPIDatingAPP.Controllers
                 if (computedHash[i] != user.PasswordHash[i])return Unauthorized("Invalid Password");
             }
 
-            return user;
+            return new UsersDTo
+            {
+                UserName = user.UserName,
+                Token = _token.CreateToken(user)
+
+
+            };
 
         }
         private async Task <bool> UserExists( string username)

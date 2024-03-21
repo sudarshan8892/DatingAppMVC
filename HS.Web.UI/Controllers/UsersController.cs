@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebAPIDatingAPP.Entities;
 
 namespace HS.Web.UI.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         Uri baseUrl = new Uri("https://localhost:9999/api");
@@ -14,7 +16,7 @@ namespace HS.Web.UI.Controllers
             _Client = new HttpClient();    
             _Client.BaseAddress = baseUrl;  
         }
-
+        [AllowAnonymous]
         public IActionResult Index()
         {
             string data = null;
